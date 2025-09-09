@@ -40,6 +40,8 @@ const camera = new THREE.PerspectiveCamera(
 );
 camera.position.set(0, 80, 220);
 
+
+
 /* ------------------ Controls ------------------ */
 const controls = new OrbitControls(camera, renderer.domElement);
 controls.enableDamping = true;
@@ -150,22 +152,9 @@ scene.add(grid);
 
 /* --------------- Post-processing (Selective Bloom) --------------- */
 const BLOOM_LAYER = 1;
-camera.layers.enable(BLOOM_LAYER);
 
-const composer = new EffectComposer(renderer);
-composer.addPass(new RenderPass(scene, camera));
-const bloomPass = new UnrealBloomPass(
-  new THREE.Vector2(container.clientWidth, container.clientHeight),
-  CONFIG.bloomStrength,
-  CONFIG.bloomRadius,
-  CONFIG.bloomThreshold
-);
-composer.addPass(bloomPass);
-
-// helper to mark meshes for bloom
 const addToBloom = (mesh) => mesh.layers.enable(BLOOM_LAYER);
 
-// darken non-bloomed objects during bloom pass
 const darkMaterial = new THREE.MeshBasicMaterial({ color: 0x000000 });
 const materials = new Map();
 function darkenNonBloom(obj) {
